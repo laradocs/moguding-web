@@ -24,6 +24,7 @@ class User extends Authenticatable
         'name',
         'email',
         'email_verified_at',
+        'gender',
         'avatar',
         'password',
         'remember_token',
@@ -51,6 +52,7 @@ class User extends Authenticatable
         'name' => 'string',
         'email' => 'string',
         'email_verified_at' => 'datetime',
+        'gender' => 'integer',
         'avatar' => 'string',
         'password' => 'string',
         'remember_token' => 'string',
@@ -60,22 +62,17 @@ class User extends Authenticatable
 
     public function setPasswordAttribute ( string $password )
     {
-        $this->attributes [ 'password' ] = Hash::make ( $password );
+        if ( strlen ( $password ) !== 60 ) {
+            $this->attributes [ 'password' ] = Hash::make ( $password );
+        }
     }
 
-    public function getAvatarAttribute()
+    public function getAvatarAttribute ( $avatar )
     {
-        if ( empty ( $this->avatar ) ) {
-            if ( ! $this->gender ) {
-                return asset ( 'avatars/boy.png' );
-            } else {
-                return asset ( 'avatars/girl.png' );
-            }
-        }
-        if ( str_contains ( $this->avatar, '//' ) ) {
-            return $this->avatar;
+        if ( str_contains ( $avatar, '//' ) ) {
+            return $avatar;
         }
 
-        return Storage::url ( $this->avatar );
+        return Storage::url ( $avatar );
     }
 }
