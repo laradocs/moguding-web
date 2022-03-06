@@ -23,6 +23,9 @@
             @enderror
         </div>
         <div class="form-group">
+
+        </div>
+        <div class="form-group">
             <label for="password">密码</label>
             <input id="password" class="form-control @error ( 'password' ) is-invalid @enderror" type="password" name="password" placeholder="请输入密码" required="required" autocomplete="off" value="" />
             @error ( 'password' )
