@@ -4,7 +4,7 @@
     </button>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item no-arrow mx-1">
-            <a class="nav-link" href="https://www.github.com/laradocs" title="">
+            <a class="nav-link" href="https://www.github.com/laradocs" target="_blank" title="">
                 <i class="fa-brands fa-github fa-xl"></i>
             </a>
         </li>
