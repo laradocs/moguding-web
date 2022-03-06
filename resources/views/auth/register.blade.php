@@ -23,7 +23,17 @@
             @enderror
         </div>
         <div class="form-group">
-
+            <label for="gender">性别</label>
+            <select id="gender" class="custom-select @error ( 'gender' ) is-invalid @enderror" name="gender">
+                <option value="">请选择性别</option>
+                <option value="1" {{ old ( 'gender' ) === '1' ? 'selected' : '' }}>男</option>
+                <option value="0" {{ old ( 'gender' ) === '0' ? 'selected' : '' }}>女</option>
+            </select>
+            @error ( 'gender' )
+                <span class="invalid-feedback">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
         </div>
         <div class="form-group">
             <label for="password">密码</label>

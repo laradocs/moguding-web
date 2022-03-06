@@ -35,6 +35,7 @@ class UserDao implements UserRepository
             $model->email = $attributes [ 'email' ];
         }
         $model->name = $attributes [ 'name' ];
+        $model->gender = $attributes [ 'gender' ];
         $model->avatar = $attributes [ 'avatar' ] ?? '';
         $model->password = $attributes [ 'password' ];
         $model->save();
