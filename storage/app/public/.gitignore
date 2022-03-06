@@ -1,3 +1,4 @@
 *
 !.gitignore
-!avatars
+!avatars/boy.png
+!avatars/girl.png
