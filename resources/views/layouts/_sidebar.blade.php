@@ -8,8 +8,14 @@
     <hr class="sidebar-divider my-0">
     <li class="nav-item active">
         <a class="nav-link" href="{{ route ( 'dashboard' ) }}" title="">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <i class="fa-solid fa-fw fa-gauge-high"></i>
             <span>控制面板</span>
+        </a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{{ route ( 'accounts.index' ) }}" title="">
+            <i class="fa-solid fa-fw fa-user"></i>
+            <span>账户管理</span>
         </a>
     </li>
 </ul>
