@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -60,5 +61,10 @@ class User extends Authenticatable
     public function setPasswordAttribute ( string $password )
     {
         $this->attributes [ 'password' ] = Hash::make ( $password );
+    }
+
+    public function getAvatarAttribute()
+    {
+
     }
 }
