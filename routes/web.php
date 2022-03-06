@@ -25,6 +25,6 @@ Route::middleware ( 'guest:web' )->group ( function () {
 } );
 
 Route::middleware ( 'auth:web' )->group ( function () {
-    Route::get ( 'logout', [ LoginController::class, 'destroy' ] )->name ( 'logout' );
+    Route::delete ( 'logout', [ LoginController::class, 'destroy' ] )->name ( 'logout' );
     Route::get ( 'dashboard', [ DashboardController::class, 'index' ] )->name ( 'dashboard' );
 } );
