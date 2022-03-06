@@ -65,6 +65,17 @@ class User extends Authenticatable
 
     public function getAvatarAttribute()
     {
+        if ( empty ( $this->avatar ) ) {
+            if ( ! $this->gender ) {
+                return asset ( 'avatars/boy.png' );
+            } else {
+                return asset ( 'avatars/girl.png' );
+            }
+        }
+        if ( str_contains ( $this->avatar, '//' ) ) {
+            return $this->avatar;
+        }
 
+        return Storage::url ( $this->avatar );
     }
 }
