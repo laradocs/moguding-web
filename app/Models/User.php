@@ -82,4 +82,9 @@ class User extends Authenticatable
 
         return Storage::url ( $avatar );
     }
+
+    public function accounts()
+    {
+        return $this->hasMany ( Account::class, 'user_id', 'id' );
+    }
 }

@@ -12,8 +12,8 @@
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false">
-                <img class="img-profile rounded-circle" src="{{ $user->avatar }}" style="max-width: 60px">
-                <span class="ml-2 d-none d-lg-inline text-white small">{{ $user->name }}</span>
+                <img class="img-profile rounded-circle" src="{{ Auth::user()->avatar }}" style="max-width: 60px">
+                <span class="ml-2 d-none d-lg-inline text-white small">{{ Auth::user()->name }}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <a id="logout" class="dropdown-item" href="javascript:void(0);">
