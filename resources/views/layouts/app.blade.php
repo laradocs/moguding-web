@@ -9,6 +9,7 @@
     <title>@yield ( 'title' ) - {{ config ( 'app.name' ) }}</title>
     @section ( 'style' )
         <link rel="stylesheet" href="{{ asset ( 'assets/bootstrap@4.6.1/css/bootstrap.min.css' ) }}" />
+        <link rel="stylesheet" href="{{ asset ( 'assets/bootstrap-table@1.19.1/css/bootstrap-table.min.css' ) }}">
         <link rel="stylesheet" href="{{ asset ( 'assets/fontawesome@6.0.0/css/fontawesome.min.css' ) }}" />
         <link rel="stylesheet" href="{{ asset ( 'assets/toastr@2.1.1/css/toastr.min.css' ) }}" />
         <link rel="stylesheet" href="{{ asset ( 'assets/sweetalert2@11.4.4/css/sweetalert2.min.css' ) }}" />
@@ -23,6 +24,7 @@
         <div id="content">
             @include ( 'layouts._topbar' )
             <div class="container-fluid" id="container-wrapper">
+                @include ( 'layouts._header' )
                 @yield ( 'content' )
             </div>
         </div>
@@ -32,9 +34,11 @@
 
 @section ( 'script' )
     <script src="{{ asset ( 'assets/jquery@3.6.0/js/jquery.min.js' ) }}"></script>
+    <script src="{{ asset ( 'assets/jquery.easing@1.4.1/js/jquery.easing.min.js' ) }}"></script>
     <script src="{{ asset ( 'assets/popper@2.11.2/js/popper.min.js' ) }}"></script>
     <script src="{{ asset ( 'assets/bootstrap@4.6.1/js/bootstrap.min.js' ) }}"></script>
-    <script src="{{ asset ( 'assets/jquery.easing@1.4.1/js/jquery.easing.min.js' ) }}"></script>
+    <script src="{{ asset ( 'assets/bootstrap-table@1.19.1/js/bootstrap-table.min.js' ) }}"></script>
+    <script src="{{ asset ( 'assets/bootstrap-table@1.19.1/js/bootstrap-table-zh-CN.min.js' ) }}"></script>
     <script src="{{ asset ( 'assets/toastr@2.1.1/js/toastr.min.js' ) }}"></script>
     <script src="{{ asset ( 'assets/sweetalert2@11.4.4/js/sweetalert2.min.js' ) }}"></script>
     <script src="{{ asset ( 'js/app.min.js' ) }}"></script>
@@ -78,6 +82,8 @@
                     }
                 } );
             } );
+
+            $('#table').bootstrapTable();
         })(jQuery);
     </script>
 @show
