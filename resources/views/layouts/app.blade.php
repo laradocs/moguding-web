@@ -24,6 +24,7 @@
         <div id="content">
             @include ( 'layouts._topbar' )
             <div class="container-fluid" id="container-wrapper">
+                @include ( 'layouts._header' )
                 @yield ( 'content' )
             </div>
         </div>

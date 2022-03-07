@@ -2,11 +2,9 @@
 @section ( 'title', '账户管理' )
 
 @section ( 'content' )
-    @include ( 'layouts._header' )
-
     <div class="card">
         <div class="card-header">
-            <a class="btn btn-sm btn-primary" href="" title="">
+            <a class="btn btn-sm btn-primary" href="{{ route ( 'accounts.create' ) }}" title="">
                 <i class="fa-solid fa-plus"></i>
                 <span>添加账户</span>
             </a>
@@ -29,7 +27,7 @@
                     <td>{{ $account->phone }}</td>
                     <td>{!! $account->status ? '<span class="badge badge-success">正常</span>' : '<span class="badge badge-danger">异常</span>' !!}</td>
                     <td>
-                        <a class="btn btn-sm btn-info" href="{{ route ( 'accounts.create' ) }}" title="">
+                        <a class="btn btn-sm btn-info" href="{{ route ( 'accounts.edit', $account ) }}" title="">
                             <i class="fa-solid fa-sm fa-pen-to-square"></i>
                         </a>
                         <a class="btn btn-sm btn-danger" href="javascript:void(0);" title="">

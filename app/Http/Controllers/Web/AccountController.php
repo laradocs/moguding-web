@@ -22,4 +22,9 @@ class AccountController extends Controller
 
         return view ( 'account.index', compact ( 'accounts' ) );
     }
+
+    public function create()
+    {
+        return view ( 'account.create' );
+    }
 }
