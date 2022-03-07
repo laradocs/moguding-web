@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AccountRequest;
 use App\Repositories\AccountRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Laradocs\Moguding\Exceptions\RequestTimeoutException;
+use Laradocs\Moguding\Exceptions\UnauthenticatedException;
 
 class AccountController extends Controller
 {
@@ -31,6 +32,23 @@ class AccountController extends Controller
 
     public function store ( AccountRequest $request )
     {
+        try {
+            $user = app('moguding')->login (
+                $request->device,
+                $request->phone,
+                $request->password
+            );
+        } catch ( RequestTimeoutException|UnauthenticatedException $e ) {
+            session()->flash ( 'error', $e->getMessage() );
 
+            return back()->withInput();
+        }
+        $this->accounts->createOrUpdate(
+            $this->getCurrentUserId(),
+            $request->all()
+        );
+        session()->flash ( 'success', '创建成功！' );
+
+        return redirect()->route ( 'accounts.index' );
     }
 }

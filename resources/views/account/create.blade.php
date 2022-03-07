@@ -38,7 +38,7 @@
                         </div>
                         <div class="form-group">
                             <label for="password">密码</label>
-                            <input id="password" class="form-control @error ( 'password' ) is-invalid @enderror" type="password" name="password" placeholder="请输入密码" required="required" value="{{ old ( 'password' ) }}" />
+                            <input id="password" class="form-control @error ( 'password' ) is-invalid @enderror" type="password" name="password" placeholder="请输入密码" required="required" value="" />
                             @error ( 'password' )
                                 <span class="invalid-feedback">
                                     <strong>{{ $message }}</strong>
