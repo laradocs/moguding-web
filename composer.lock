@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "053a17930903990c46d0fea4be5ac253",
+    "content-hash": "3e10f06048d752daac8d918426c0f7c4",
     "packages": [
         {
             "name": "brick/math",
@@ -892,6 +892,51 @@
                 }
             ],
             "time": "2021-10-06T17:43:30+00:00"
+        },
+        {
+            "name": "laradocs/moguding",
+            "version": "2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laradocs/php-moguding-sdk.git",
+                "reference": "f3ed71e55696de5e6ee077d4bfe22afa301e245a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laradocs/php-moguding-sdk/zipball/f3ed71e55696de5e6ee077d4bfe22afa301e245a",
+                "reference": "f3ed71e55696de5e6ee077d4bfe22afa301e245a",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7.4",
+                "php": ">=8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.4",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Laradocs\\Moguding\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "laradocs",
+                    "email": "75692074@qq.com"
+                }
+            ],
+            "description": "蘑菇丁 SDK",
+            "support": {
+                "issues": "https://github.com/laradocs/php-moguding-sdk/issues",
+                "source": "https://github.com/laradocs/php-moguding-sdk/tree/2.1.1"
+            },
+            "time": "2022-02-25T16:13:18+00:00"
         },
         {
             "name": "laravel/framework",

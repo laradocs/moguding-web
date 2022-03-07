@@ -167,6 +167,7 @@ return [
         /*
          * Package Service Providers...
          */
+        App\Providers\MogudingServiceProvider::class,
 
         /*
          * Application Service Providers...

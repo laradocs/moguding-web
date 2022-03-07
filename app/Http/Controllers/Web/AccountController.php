@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AccountRequest;
 use App\Repositories\AccountRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,5 +27,10 @@ class AccountController extends Controller
     public function create()
     {
         return view ( 'account.create' );
+    }
+
+    public function store ( AccountRequest $request )
+    {
+
     }
 }
