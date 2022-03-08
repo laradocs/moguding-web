@@ -47,4 +47,9 @@ class Account extends Model
     {
         return $this->belongsTo ( User::class, 'user_id', 'id' );
     }
+
+    public function authorize ( int $userId ): bool
+    {
+        return $this->user_id === $userId;
+    }
 }

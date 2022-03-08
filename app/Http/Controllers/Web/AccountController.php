@@ -56,7 +56,7 @@ class AccountController extends Controller
 
     public function edit ( int $id )
     {
-        $account = $this->accounts->findOrFailById($id);
+        $account = $this->accounts->findOrFailById($id, $this->getCurrentUserId());
 
         return view ( 'account.edit', compact ( 'account' ) );
     }
@@ -87,7 +87,7 @@ class AccountController extends Controller
 
     public function destroy ( int $id )
     {
-        $this->accounts->delete($id);
+        $this->accounts->delete($id, $this->getCurrentUserId());
 
         return response()->json ( [
             'message' => '删除成功！',

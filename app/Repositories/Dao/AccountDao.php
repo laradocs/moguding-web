@@ -2,9 +2,10 @@
 
 namespace App\Repositories\Dao;
 
-use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\NoPermissionException;
+use App\Exceptions\RecordNotFoundException;
 use App\Models\Account;
-use App\Models\User;
+use App\Models\Model;
 use App\Repositories\AccountRepository;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -19,13 +20,22 @@ class AccountDao implements AccountRepository
         return $models;
     }
 
-    /**
-     * @param int $id
-     * @return Account|null
-     */
-    public function findById(int $id): ?Account
+    public function findById(int $id, bool $throw = false): ?Account
     {
         $model = Account::find ( $id );
+        if ( empty ( $model ) && $throw ) {
+            throw new RecordNotFoundException();
+        }
+
+        return $model;
+    }
+
+    public function findOrFailById(int $id, int $userId): Account
+    {
+        $model = $this->findById($id, true);
+        if ( ! $model->authorize($userId) ) {
+            throw new NoPermissionException();
+        }
 
         return $model;
     }
@@ -37,6 +47,9 @@ class AccountDao implements AccountRepository
             $model = new Account();
             $model->user_id = $userId;
         }
+        if ( ! $model->authorize($userId) ) {
+            throw new NoPermissionException();
+        }
         $model->device = $attributes [ 'device' ];
         $model->phone = $attributes [ 'phone' ];
         $model->password = $attributes [ 'password' ];
@@ -46,19 +59,9 @@ class AccountDao implements AccountRepository
         return $model;
     }
 
-    public function delete(int $id): void
+    public function delete(int $id, int $userId): void
     {
-        $model = $this->findById($id);
-        if ( is_null ( $model ) ) {
-            throw new ModelNotFoundException('删除失败，该账户不存在。');
-        }
+        $model = $this->findOrFailById($id, $userId);
         $model->delete();
-    }
-
-    public function findOrFailById(int $id): Account
-    {
-        $model = Account::query()->findOrFail ( $id );
-
-        return $model;
     }
 }
