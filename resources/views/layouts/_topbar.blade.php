@@ -4,6 +4,16 @@
     </button>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item no-arrow mx-1">
+            <a class="nav-link" href="https://qm.qq.com/cgi-bin/qm/qr?k=u_WebMfbiBWggH-zlv5BFLa1ESVtfzNI&jump_from=webapi" target="_blank" title="">
+                <i class="fa-brands fa-qq fa-xl"></i>
+            </a>
+        </li>
+        <li class="nav-item no-arrow mx-1">
+            <a class="nav-link" href="https://www.github.com/laradocs/moguding-web" target="_blank" title="">
+                <i class="fa-solid fa-code-branch fa-xl"></i>
+            </a>
+        </li>
+        <li class="nav-item no-arrow mx-1">
             <a class="nav-link" href="https://www.github.com/laradocs" target="_blank" title="">
                 <i class="fa-brands fa-github fa-xl"></i>
             </a>
