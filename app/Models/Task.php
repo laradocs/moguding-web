@@ -50,6 +50,11 @@ class Task extends Model
         return $this->belongsTo ( User::class, 'user_id', 'id' );
     }
 
+    public function account()
+    {
+        return $this->belongsTo ( Account::class, 'account_id', 'id' );
+    }
+
     public function address()
     {
         return $this->belongsTo ( Address::class, 'address_id', 'id' );
