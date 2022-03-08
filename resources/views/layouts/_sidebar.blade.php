@@ -24,4 +24,10 @@
             <span>地址管理</span>
         </a>
     </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{{ route ( 'tasks.index' ) }}" title="">
+            <i class="fa-solid fa-fw fa-bars-progress"></i>
+            <span>任务管理</span>
+        </a>
+    </li>
 </ul>

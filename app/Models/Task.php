@@ -9,7 +9,7 @@ class Task extends Model
      *
      * @var string
      */
-    protected $table = 'takes';
+    protected $table = 'tasks';
 
     /**
      * The attributes that are mass assignable.
@@ -44,6 +44,16 @@ class Task extends Model
         'description' => 'string',
         'status' => 'boolean',
     ];
+
+    public function getRunTimeAttribute ( $runTime )
+    {
+        return json_decode ( $runTime, true );
+    }
+
+    public function setRunTimeAttribute ( $runTime )
+    {
+        $this->attributes [ 'run_time' ] = json_encode ( $runTime );
+    }
 
     public function user()
     {

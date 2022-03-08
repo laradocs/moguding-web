@@ -29,4 +29,5 @@ Route::middleware ( 'auth:web' )->group ( function () {
     Route::get ( 'dashboard', [ DashboardController::class, 'index' ] )->name ( 'dashboard' );
     Route::resource ( 'accounts', AccountController::class )->except ( 'show' );
     Route::resource ( 'addresses', AddressController::class )->except ( 'show' );
+    Route::resource ( 'tasks', TaskController::class )->except ( 'show' );
 } );

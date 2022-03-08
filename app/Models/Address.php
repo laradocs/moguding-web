@@ -40,6 +40,11 @@ class Address extends Model
         'updated_at' => 'datetime',
     ];
 
+    public function getFullAddressAttribute()
+    {
+        return sprintf ( '%s %s %s', $this->province, $this->city, $this->address );
+    }
+
     public function user()
     {
         return $this->belongsTo ( User::class, 'user_id', 'id' );
