@@ -22,6 +22,11 @@ class AddressController extends Controller
         return view ( 'address.index', compact ( 'addresses' ) );
     }
 
+    public function create()
+    {
+        return view ( 'address.create' );
+    }
+
     public function store ( AddressRequest $request )
     {
         $this->addresses->createOrUpdate(

@@ -46,5 +46,7 @@ class AddressDao implements AddressRepository
         $model->longitude = $attributes [ 'longitude' ];
         $model->latitude = $attributes [ 'latitude' ];
         $model->save();
+
+        return $model;
     }
 }
