@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AccountRequest;
-use App\Models\Account;
 use App\Repositories\AccountRepository;
-use Illuminate\Http\Request;
 use Laradocs\Moguding\Exceptions\RequestTimeoutException;
 use Laradocs\Moguding\Exceptions\UnauthenticatedException;
 

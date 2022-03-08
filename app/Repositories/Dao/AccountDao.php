@@ -5,7 +5,6 @@ namespace App\Repositories\Dao;
 use App\Exceptions\NoPermissionException;
 use App\Exceptions\RecordNotFoundException;
 use App\Models\Account;
-use App\Models\Model;
 use App\Repositories\AccountRepository;
 use Illuminate\Database\Eloquent\Collection;
 
