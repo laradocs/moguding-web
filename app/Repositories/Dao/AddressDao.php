@@ -59,4 +59,10 @@ class AddressDao implements AddressRepository
 
         return $model;
     }
+
+    public function delete(int $id, int $userId): void
+    {
+        $model = $this->findOrFailById($id, $userId);
+        $model->delete();
+    }
 }

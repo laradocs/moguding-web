@@ -12,4 +12,6 @@ interface AddressRepository
     public function createOrUpdate ( int $userId, array $attributes, int $id = 0 ): Address;
 
     public function findOrFailById ( int $id, int $userId ): Address;
+
+    public function delete ( int $id, int $userId ): void;
 }

@@ -44,4 +44,25 @@ class AddressController extends Controller
 
         return view ( 'address.edit', compact ( 'address' ) );
     }
+
+    public function update ( AddressRequest $request, int $id )
+    {
+        $this->addresses->createOrUpdate(
+            $this->getCurrentUserId(),
+            $request->all(),
+            $id
+        );
+        session()->flash ( 'success', '修改成功！' );
+
+        return redirect()->route ( 'addresses.index' );
+    }
+
+    public function destroy ( int $id )
+    {
+        $this->addresses->delete($id, $this->getCurrentUserId());
+
+        return response()->json ( [
+            'message' => '删除成功！',
+        ] );
+    }
 }
