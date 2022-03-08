@@ -48,7 +48,7 @@ class AccountController extends Controller
             $this->getCurrentUserId(),
             $request->all()
         );
-        session()->flash ( 'success', '创建成功！' );
+        session()->flash ( 'success', '添加成功！' );
 
         return redirect()->route ( 'accounts.index' );
     }
