@@ -19,7 +19,7 @@ class AccountController extends Controller
 
     public function index()
     {
-       $accounts = $this->accounts->getByUserId($this->getCurrentUserId());
+       $accounts = $this->accounts->getByUserIdOrderLatest($this->getCurrentUserId());
 
         return view ( 'account.index', compact ( 'accounts' ) );
     }

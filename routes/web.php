@@ -28,4 +28,5 @@ Route::middleware ( 'auth:web' )->group ( function () {
     Route::delete ( 'logout', [ LoginController::class, 'destroy' ] )->name ( 'logout' );
     Route::get ( 'dashboard', [ DashboardController::class, 'index' ] )->name ( 'dashboard' );
     Route::resource ( 'accounts', AccountController::class )->except ( 'show' );
+    Route::resource ( 'addresses', AddressController::class )->except ( 'show' );
 } );
