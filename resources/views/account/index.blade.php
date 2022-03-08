@@ -30,7 +30,7 @@
                         <a class="btn btn-sm btn-info" href="{{ route ( 'accounts.edit', $account ) }}" title="">
                             <i class="fa-solid fa-sm fa-pen-to-square"></i>
                         </a>
-                        <a class="btn btn-sm btn-danger" href="javascript:void(0);" title="">
+                        <a class="btn btn-sm btn-danger btn-destroy" href="javascript:void(0);" data-id="{{ $account->id }}" title="">
                             <i class="fa-solid fa-sm fa-trash-can"></i>
                         </a>
                     </td>
@@ -39,4 +39,52 @@
             </tbody>
         </table>
     </div>
+@stop
+@section ( 'script' )
+    @parent
+    <script>
+        (function () {
+            "use strict";
+
+            $('.btn-destroy').click ( function () {
+                var self = $(this);
+                swal.fire ( {
+                    icon: 'warning',
+                    text: '您确定要删除此账户吗？',
+                    showConfirmButton: false,
+                    showDenyButton: true,
+                    denyButtonText: '确定',
+                    showCancelButton: true,
+                    cancelButtonText: '取消',
+                    showLoaderOnDeny: true,
+                    preDeny: () => {
+                        var id = self.data('id');
+
+                        return $.ajax ( {
+                            type: 'DELETE',
+                            url: '/accounts/' + id,
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: ( response ) => {
+                                swal.fire ( {
+                                    icon: 'success',
+                                    text: response.message,
+                                    confirmButtonText: '确定'
+                                } );
+                                self.closest('tr').remove();
+                            },
+                            error: ( error ) => {
+                                swal.fire ( {
+                                    icon: 'error',
+                                    text: error.responseJSON.message,
+                                    confirmButtonText: '确定'
+                                } );
+                            }
+                        } );
+                    }
+                } )
+            } );
+        })(jQuery)
+    </script>
 @stop

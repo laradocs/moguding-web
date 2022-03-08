@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Dao;
 
+use App\Exceptions\ModelNotFoundException;
 use App\Models\Account;
 use App\Models\User;
 use App\Repositories\AccountRepository;
@@ -18,9 +19,9 @@ class AccountDao implements AccountRepository
 
     /**
      * @param int $id
-     * @return User|null
+     * @return Account|null
      */
-    public function findById ( int $id ): ?User
+    public function findById(int $id): ?Account
     {
         $model = Account::find ( $id );
 
@@ -41,5 +42,14 @@ class AccountDao implements AccountRepository
         $model->save();
 
         return $model;
+    }
+
+    public function delete(int $id): void
+    {
+        $model = $this->findById($id);
+        if ( is_null ( $model ) ) {
+            throw new ModelNotFoundException('删除失败，该账户不存在。');
+        }
+        $model->delete();
     }
 }
