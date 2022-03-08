@@ -12,7 +12,9 @@ class AccountDao implements AccountRepository
 {
     public function getByUserId(int $userId): Collection
     {
-        $models = Account::where ( 'user_id', $userId )->get();
+        $models = Account::where ( 'user_id', $userId )
+            ->orderBy ( 'updated_at', 'desc' )
+            ->get();
 
         return $models;
     }

@@ -80,6 +80,9 @@ class AccountController extends Controller
             $attributes,
             $id
         );
+        session()->flash ( 'success', '修改成功！' );
+
+        return redirect()->route ( 'accounts.index' );
     }
 
     public function destroy ( int $id )
