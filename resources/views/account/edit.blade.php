@@ -1,5 +1,5 @@
 @extends ( 'layouts.app' )
-@section ( 'title', '添加账户' )
+@section ( 'title', '修改账户' )
 
 @section ( 'content' )
     <div class="card">
@@ -12,14 +12,14 @@
         <div class="card-body">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <form action="{{ route ( 'accounts.store' ) }}" method="post" novalidate="novalidate">
+                    <form action="{{ route ( 'accounts.update', $account ) }}" method="post" novalidate="novalidate">
                         @csrf
+                        @method ( 'PUT' )
                         <div class="form-group">
                             <label for="device">设备</label>
                             <select id="device" class="custom-select @error ( 'device' ) is-invalid @enderror" name="device">
-                                <option value="">请选择设备</option>
                                 @foreach ( [ 'android' => '安卓', 'ios' => '苹果' ] as $key => $value )
-                                    <option value="{{ $key }}" {{ old ( 'device' ) == $key ? 'selected' : '' }}>{{ $value }}</option>
+                                    <option value="{{ $key }}" {{ $key == $account->device ? 'selected' : '' }} {{ old ( 'device' ) == $key ? 'selected' : '' }}>{{ $value }}</option>
                                 @endforeach
                             </select>
                             @error ( 'device' )
@@ -30,7 +30,7 @@
                         </div>
                         <div class="form-group">
                             <label for="phone">手机号码</label>
-                            <input id="phone" class="form-control @error ( 'phone' ) is-invalid @enderror" type="text" name="phone" placeholder="请输入手机号码" required="required" value="{{ old ( 'phone' ) }}" />
+                            <input id="phone" class="form-control @error ( 'phone' ) is-invalid @enderror" type="text" name="phone" placeholder="请输入手机号码" required="required" value="{{ old ( 'phone', $account->phone ) }}" />
                             @error ( 'phone' )
                                 <span class="invalid-feedback">
                                     <strong>{{ $message }}</strong>
@@ -52,4 +52,4 @@
             </div>
         </div>
     </div>
-@stop
+@endsection

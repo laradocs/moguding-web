@@ -52,4 +52,11 @@ class AccountDao implements AccountRepository
         }
         $model->delete();
     }
+
+    public function findOrFailById(int $id): Account
+    {
+        $model = Account::query()->findOrFail ( $id );
+
+        return $model;
+    }
 }
