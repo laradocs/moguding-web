@@ -29,16 +29,6 @@ class AccountDao implements AccountRepository
         return $model;
     }
 
-    public function findOrFailById(int $id, int $userId): Account
-    {
-        $model = $this->findById($id, true);
-        if ( ! $model->authorize($userId) ) {
-            throw new NoPermissionException();
-        }
-
-        return $model;
-    }
-
     public function createOrUpdate(int $userId, array $attributes, int $id = 0): Account
     {
         $model = $this->findById($id);
@@ -54,6 +44,16 @@ class AccountDao implements AccountRepository
         $model->password = $attributes [ 'password' ];
         $model->status = true;
         $model->save();
+
+        return $model;
+    }
+
+    public function findOrFailById(int $id, int $userId): Account
+    {
+        $model = $this->findById($id, true);
+        if ( ! $model->authorize($userId) ) {
+            throw new NoPermissionException();
+        }
 
         return $model;
     }

@@ -37,4 +37,11 @@ class AddressController extends Controller
 
         return redirect()->route ( 'accounts.index' );
     }
+
+    public function edit ( int $id )
+    {
+        $address = $this->addresses->findOrFailById($id, $this->getCurrentUserId());
+
+        return view ( 'address.edit', compact ( 'address' ) );
+    }
 }

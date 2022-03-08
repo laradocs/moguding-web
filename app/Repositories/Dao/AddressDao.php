@@ -49,4 +49,14 @@ class AddressDao implements AddressRepository
 
         return $model;
     }
+
+    public function findOrFailById(int $id, int $userId): Address
+    {
+        $model = $this->findById($id, true);
+        if ( ! $model->authorize($userId) ) {
+            throw new NoPermissionException();
+        }
+
+        return $model;
+    }
 }
