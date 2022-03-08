@@ -35,7 +35,7 @@ class AddressController extends Controller
         );
         session()->flash ( 'success', '添加成功！' );
 
-        return redirect()->route ( 'accounts.index' );
+        return redirect()->route ( 'addresses.index' );
     }
 
     public function edit ( int $id )
