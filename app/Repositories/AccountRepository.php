@@ -10,4 +10,6 @@ interface AccountRepository
     public function getByUserId ( int $userId ): Collection;
 
     public function createOrUpdate ( int $userId, array $attributes, int $id = 0 ): Account;
+
+    public function delete ( int $id ): void;
 }
