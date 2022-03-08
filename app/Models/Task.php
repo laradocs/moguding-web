@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-class Account extends Model
+class Task extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'accounts';
+    protected $table = 'takes';
 
     /**
      * The attributes that are mass assignable.
@@ -19,9 +19,11 @@ class Account extends Model
     protected $fillable = [
         'id',
         'user_id',
-        'device',
-        'phone',
-        'password',
+        'account_id',
+        'address_id',
+        'type',
+        'run_time',
+        'description',
         'status',
         'created_at',
         'updated_at',
@@ -34,13 +36,13 @@ class Account extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'account_id' => 'integer',
         'user_id' => 'integer',
-        'device' => 'string',
-        'phone' => 'integer',
-        'password' => 'string',
+        'address_id' => 'integer',
+        'type' => 'string',
+        'run_time' => 'json',
+        'description' => 'string',
         'status' => 'boolean',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
     ];
 
     public function user()
@@ -48,13 +50,8 @@ class Account extends Model
         return $this->belongsTo ( User::class, 'user_id', 'id' );
     }
 
-    public function tasks()
+    public function address()
     {
-        return $this->hasMany ( Account::class, 'account_id', 'id' );
-    }
-
-    public function authorize ( int $userId )
-    {
-        return $this->user_id === $userId;
+        return $this->belongsTo ( Address::class, 'address_id', 'id' );
     }
 }

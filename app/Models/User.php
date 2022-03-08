@@ -92,4 +92,9 @@ class User extends Authenticatable
     {
         return $this->hasMany ( Address::class, 'user_id', 'id' );
     }
+
+    public function takes()
+    {
+        return $this->hasMany ( Task::class, 'task_id', 'id' );
+    }
 }
