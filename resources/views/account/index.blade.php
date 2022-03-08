@@ -19,7 +19,7 @@
                 <th>操作</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody class="table-sm">
             @foreach ( $accounts as $account )
                 <tr>
                     <td>{{ $account->id }}</td>

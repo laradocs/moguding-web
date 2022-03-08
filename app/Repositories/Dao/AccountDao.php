@@ -12,7 +12,9 @@ class AccountDao implements AccountRepository
 {
     public function getByUserId(int $userId): Collection
     {
-        $models = Account::where ( 'user_id', $userId )->get();
+        $models = Account::where ( 'user_id', $userId )
+            ->orderBy ( 'updated_at', 'desc' )
+            ->get();
 
         return $models;
     }
@@ -51,5 +53,12 @@ class AccountDao implements AccountRepository
             throw new ModelNotFoundException('删除失败，该账户不存在。');
         }
         $model->delete();
+    }
+
+    public function findOrFailById(int $id): Account
+    {
+        $model = Account::query()->findOrFail ( $id );
+
+        return $model;
     }
 }

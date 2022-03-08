@@ -33,11 +33,12 @@ class AccountController extends Controller
 
     public function store ( AccountRequest $request )
     {
+        $attributes = $request->all();
         try {
-            $user = app('moguding')->login (
-                $request->device,
-                $request->phone,
-                $request->password
+            app('moguding')->login (
+                $attributes [ 'device' ],
+                $attributes [ 'phone' ],
+                $attributes [ 'password' ]
             );
         } catch ( RequestTimeoutException|UnauthenticatedException $e ) {
             session()->flash ( 'error', $e->getMessage() );
@@ -46,9 +47,40 @@ class AccountController extends Controller
         }
         $this->accounts->createOrUpdate(
             $this->getCurrentUserId(),
-            $request->all()
+            $attributes
         );
         session()->flash ( 'success', '添加成功！' );
+
+        return redirect()->route ( 'accounts.index' );
+    }
+
+    public function edit ( int $id )
+    {
+        $account = $this->accounts->findOrFailById($id);
+
+        return view ( 'account.edit', compact ( 'account' ) );
+    }
+
+    public function update ( AccountRequest $request, int $id )
+    {
+        $attributes = $request->all();
+        try {
+            app('moguding')->login (
+                $attributes [ 'device' ],
+                $attributes [ 'phone' ],
+                $attributes [ 'password' ]
+            );
+        } catch ( RequestTimeoutException|UnauthenticatedException $e ) {
+            session()->flash ( 'error', $e->getMessage() );
+
+            return back()->withInput();
+        }
+        $this->accounts->createOrUpdate(
+            $this->getCurrentUserId(),
+            $attributes,
+            $id
+        );
+        session()->flash ( 'success', '修改成功！' );
 
         return redirect()->route ( 'accounts.index' );
     }
