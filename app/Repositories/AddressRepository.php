@@ -2,16 +2,16 @@
 
 namespace App\Repositories;
 
-use App\Models\Account;
+use App\Models\Address;
 use Illuminate\Database\Eloquent\Collection;
 
-interface AccountRepository
+interface AddressRepository
 {
     public function getByUserIdOrderLatest ( int $userId ): Collection;
 
-    public function findOrFailById ( int $id, int $userId ): Account;
+    public function createOrUpdate ( int $userId, array $attributes, int $id = 0 ): Address;
 
-    public function createOrUpdate ( int $userId, array $attributes, int $id = 0 ): Account;
+    public function findOrFailById ( int $id, int $userId ): Address;
 
     public function delete ( int $id, int $userId ): void;
 }

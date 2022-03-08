@@ -2,46 +2,48 @@
 
 namespace App\Models;
 
-class Account extends Model
+class Address extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'accounts';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'id',
-        'user_id',
-        'device',
-        'phone',
-        'password',
-        'status',
-        'created_at',
-        'updated_at',
-    ];
+    protected $table = 'addresses';
 
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
+    protected $fillable = [
+        'id',
+        'user_id',
+        'province',
+        'city',
+        'address',
+        'longitude',
+        'latitude',
+        'created_at',
+        'updated_at',
+    ];
+
     protected $casts = [
         'id' => 'integer',
         'user_id' => 'integer',
-        'device' => 'string',
-        'phone' => 'integer',
-        'password' => 'string',
-        'status' => 'boolean',
+        'province' => 'string',
+        'city' => 'string',
+        'address' => 'string',
+        'longitude' => 'float',
+        'latitude' => 'float',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    public function getFullAddressAttribute()
+    {
+        return sprintf ( '%s %s %s', $this->province, $this->city, $this->address );
+    }
 
     public function user()
     {
@@ -50,7 +52,7 @@ class Account extends Model
 
     public function tasks()
     {
-        return $this->hasMany ( Account::class, 'account_id', 'id' );
+        return $this->hasMany ( Task::class, 'address_id', 'id' );
     }
 
     public function authorize ( int $userId )

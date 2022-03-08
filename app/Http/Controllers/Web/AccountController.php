@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AccountRequest;
-use App\Models\Account;
 use App\Repositories\AccountRepository;
-use Illuminate\Http\Request;
 use Laradocs\Moguding\Exceptions\RequestTimeoutException;
 use Laradocs\Moguding\Exceptions\UnauthenticatedException;
 
@@ -21,7 +19,7 @@ class AccountController extends Controller
 
     public function index()
     {
-       $accounts = $this->accounts->getByUserId($this->getCurrentUserId());
+       $accounts = $this->accounts->getByUserIdOrderLatest($this->getCurrentUserId());
 
         return view ( 'account.index', compact ( 'accounts' ) );
     }
@@ -56,7 +54,7 @@ class AccountController extends Controller
 
     public function edit ( int $id )
     {
-        $account = $this->accounts->findOrFailById($id);
+        $account = $this->accounts->findOrFailById($id, $this->getCurrentUserId());
 
         return view ( 'account.edit', compact ( 'account' ) );
     }
@@ -87,7 +85,7 @@ class AccountController extends Controller
 
     public function destroy ( int $id )
     {
-        $this->accounts->delete($id);
+        $this->accounts->delete($id, $this->getCurrentUserId());
 
         return response()->json ( [
             'message' => '删除成功！',

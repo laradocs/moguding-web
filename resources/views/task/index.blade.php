@@ -1,36 +1,49 @@
 @extends ( 'layouts.app' )
-@section ( 'title', '账户管理' )
+@section ( 'title', '任务管理' )
 
 @section ( 'content' )
     <div class="card">
         <div class="card-header">
-            <a class="btn btn-sm btn-primary" href="{{ route ( 'accounts.create' ) }}" title="">
+            <a class="btn btn-sm btn-primary" href="{{ route ( 'tasks.create' ) }}" title="">
                 <i class="fa-solid fa-plus"></i>
-                <span>添加账户</span>
+                <span>添加任务</span>
             </a>
         </div>
         <table id="table" data-toggle="table">
             <thead>
             <tr>
                 <th data-sortable="true" data-field="id">ID</th>
-                <th data-field="device">设备</th>
-                <th data-field="phone">手机号码</th>
-                <th data-field="status">状态</th>
+                <th data-field="phone">打卡账号</th>
+                <th data-field="full_name">打卡地址</th>
+                <th data-field="type">打卡类型</th>
+                <th data-field="run_time">运行时间</th>
+                <th data-field="description">打卡备注</th>
                 <th>操作</th>
             </tr>
             </thead>
             <tbody>
-            @foreach ( $accounts as $account )
+            @foreach ( $tasks as $task )
                 <tr>
-                    <td>{{ $account->id }}</td>
-                    <td>{{ $account->device }}</td>
-                    <td>{{ $account->phone }}</td>
-                    <td>{!! $account->status ? '<span class="badge badge-success">正常</span>' : '<span class="badge badge-danger">异常</span>' !!}</td>
+                    <td>{{ $task->id }}</td>
+                    <td>{{ $task->account->phone }}</td>
+                    <td>{{ $task->address->full_address }}</td>
                     <td>
-                        <a class="btn btn-sm btn-info" href="{{ route ( 'accounts.edit', $account ) }}" title="">
+                        @switch ( $task->type )
+                            @case ( 'START' )
+                                <span class="badge badge-primary">上班</span>
+                            @break
+                            @case ( 'END' )
+                            <span class="badge badge-info">下班</span>
+                            @break
+                        @endswitch
+                    </td>
+                    <td>{{ $task->run_time [ 'role' ] }} {{ $task->run_time [ 'time' ] }}</td>
+                    <td>{{ $task->desciption }}</td>
+                    <td>
+                        <a class="btn btn-sm btn-info" href="{{ route ( 'tasks.edit', $task ) }}" title="">
                             <i class="fa-solid fa-sm fa-pen-to-square"></i>
                         </a>
-                        <a class="btn btn-sm btn-danger btn-destroy" href="javascript:void(0);" data-id="{{ $account->id }}" title="">
+                        <a class="btn btn-sm btn-danger btn-destroy" href="javascript:void(0);" data-id="{{ $task->id }}" title="">
                             <i class="fa-solid fa-sm fa-trash-can"></i>
                         </a>
                     </td>
@@ -50,7 +63,7 @@
                 var self = $(this);
                 swal.fire ( {
                     icon: 'warning',
-                    text: '您确定要删除此账户吗？',
+                    text: '您确定要删除此地址吗？',
                     showConfirmButton: false,
                     showDenyButton: true,
                     denyButtonText: '确定',
@@ -62,7 +75,7 @@
 
                         return $.ajax ( {
                             type: 'DELETE',
-                            url: '/accounts/' + id,
+                            url: '/addresses/' + id,
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             },

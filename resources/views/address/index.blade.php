@@ -1,36 +1,36 @@
 @extends ( 'layouts.app' )
-@section ( 'title', '账户管理' )
+@section ( 'title', '地址管理' )
 
 @section ( 'content' )
     <div class="card">
         <div class="card-header">
-            <a class="btn btn-sm btn-primary" href="{{ route ( 'accounts.create' ) }}" title="">
+            <a class="btn btn-sm btn-primary" href="{{ route ( 'addresses.create' ) }}" title="">
                 <i class="fa-solid fa-plus"></i>
-                <span>添加账户</span>
+                <span>添加地址</span>
             </a>
         </div>
         <table id="table" data-toggle="table">
             <thead>
             <tr>
                 <th data-sortable="true" data-field="id">ID</th>
-                <th data-field="device">设备</th>
-                <th data-field="phone">手机号码</th>
-                <th data-field="status">状态</th>
+                <th data-field="province">所在省</th>
+                <th data-field="city">所在市</th>
+                <th data-field="address">详细地址</th>
                 <th>操作</th>
             </tr>
             </thead>
             <tbody>
-            @foreach ( $accounts as $account )
+            @foreach ( $addresses as $address )
                 <tr>
-                    <td>{{ $account->id }}</td>
-                    <td>{{ $account->device }}</td>
-                    <td>{{ $account->phone }}</td>
-                    <td>{!! $account->status ? '<span class="badge badge-success">正常</span>' : '<span class="badge badge-danger">异常</span>' !!}</td>
+                    <td>{{ $address->id }}</td>
+                    <td>{{ $address->province }}</td>
+                    <td>{{ $address->city }}</td>
+                    <td>{{ $address->address }}</td>
                     <td>
-                        <a class="btn btn-sm btn-info" href="{{ route ( 'accounts.edit', $account ) }}" title="">
+                        <a class="btn btn-sm btn-info" href="{{ route ( 'addresses.edit', $address ) }}" title="">
                             <i class="fa-solid fa-sm fa-pen-to-square"></i>
                         </a>
-                        <a class="btn btn-sm btn-danger btn-destroy" href="javascript:void(0);" data-id="{{ $account->id }}" title="">
+                        <a class="btn btn-sm btn-danger btn-destroy" href="javascript:void(0);" data-id="{{ $address->id }}" title="">
                             <i class="fa-solid fa-sm fa-trash-can"></i>
                         </a>
                     </td>
@@ -50,7 +50,7 @@
                 var self = $(this);
                 swal.fire ( {
                     icon: 'warning',
-                    text: '您确定要删除此账户吗？',
+                    text: '您确定要删除此地址吗？',
                     showConfirmButton: false,
                     showDenyButton: true,
                     denyButtonText: '确定',
@@ -62,7 +62,7 @@
 
                         return $.ajax ( {
                             type: 'DELETE',
-                            url: '/accounts/' + id,
+                            url: '/addresses/' + id,
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             },
