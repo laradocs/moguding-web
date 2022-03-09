@@ -43,8 +43,8 @@ class TaskDao implements TaskRepository
         $model->address_id = $attributes [ 'address_id' ];
         $model->type = $attributes [ 'type' ];
         $model->run = [
-            'run_role' => $attributes [ 'run_role' ],
-            'run_time' => $attributes [ 'run_time' ],
+            'runRole' => $attributes [ 'run_role' ],
+            'runTime' => $attributes [ 'run_time' ],
         ];
         $model->description = $attributes [ 'description ' ] ?? '';
         $model->status = $attributes [ 'status' ];

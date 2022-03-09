@@ -43,7 +43,7 @@
                     </td>
                     <td>
                         <i class="fa-solid fa-clock"></i>
-                        <span>每天 {{ $task->run [ 'run_time' ] }}</span>
+                        <span>每天 {{ $task->run [ 'runTime' ] }}</span>
                     </td>
                     <td>{{ $task->desciption }}</td>
                     <td>{!! $task->status ? '<span class="badge badge-success">启用</span>' : '<span class="badge badge-danger">禁用</span>' !!}</td>

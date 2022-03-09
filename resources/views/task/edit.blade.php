@@ -69,7 +69,7 @@
                         <div class="form-group">
                             <label for="run_time">打卡时间</label>
                             <div class="input-group clockpicker">
-                                <input id="run_time" class="form-control @error ( 'run_time' ) is-invalid @enderror" type="text" name="run_time" placeholder="请选择打卡时间" value="{{ old ( 'run_time', $task->run [ 'run_time' ] ) }}" />
+                                <input id="run_time" class="form-control @error ( 'run_time' ) is-invalid @enderror" type="text" name="run_time" placeholder="请选择打卡时间" value="{{ old ( 'run_time', $task->run [ 'runTime' ] ) }}" />
                                 <div class="input-group-append">
                                     <span class="input-group-text">
                                         <i class="fa-solid fa-clock"></i>

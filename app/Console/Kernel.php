@@ -2,8 +2,14 @@
 
 namespace App\Console;
 
+use App\Jobs\ProcessPunch;
+use App\Models\Task;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Laradocs\Moguding\Exceptions\RequestTimeoutException;
+use Laradocs\Moguding\Exceptions\UnauthenticatedException;
 
 class Kernel extends ConsoleKernel
 {
@@ -15,7 +21,16 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->call ( function () {
+            $tasks = Task::with ( [ 'user', 'account', 'address' ] )->get();
+            foreach ( $tasks as $task ) {
+                if ( ! $task->status || ! $task->account->status || ( $task->run [ 'runTime' ] != date ( 'H:i' ) ) ) {
+                    continue;
+                }
+                var_dump(1);
+                ProcessPunch::dispatch ( $task );
+            }
+        });
     }
 
     /**
