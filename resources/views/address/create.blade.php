@@ -33,7 +33,7 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="address">详细地址</label>
+                            <label for="address">详细地址（打开蘑菇丁/工学云查看定位）</label>
                             <input id="address" class="form-control @error ( 'address' ) is-invalid @enderror" type="text" name="address" placeholder="请输入详细地址" required="required" value="{{ old ( 'address' ) }}" />
                             @error ( 'address' )
                             <span class="invalid-feedback">
