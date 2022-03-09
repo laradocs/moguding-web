@@ -97,4 +97,9 @@ class User extends Authenticatable
     {
         return $this->hasMany ( Task::class, 'task_id', 'id' );
     }
+
+    public function logs()
+    {
+        return $this->hasMany ( User::class, 'user_id', 'id' );
+    }
 }
