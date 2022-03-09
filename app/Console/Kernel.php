@@ -27,7 +27,6 @@ class Kernel extends ConsoleKernel
                 if ( ! $task->status || ! $task->account->status || ( $task->run [ 'runTime' ] != date ( 'H:i' ) ) ) {
                     continue;
                 }
-                var_dump(1);
                 ProcessPunch::dispatch ( $task );
             }
         });
