@@ -12,4 +12,6 @@ interface TaskRepository
     public function findById ( int $id, bool $throw = false ): ?Task;
 
     public function createOrUpdate ( int $userId, array $attributes, int $id = 0 ): Task;
+
+    public function findOrFailById ( int $id, int $userId ): Task;
 }

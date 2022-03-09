@@ -44,4 +44,17 @@ class TaskController extends Controller
 
         return redirect()->route ( 'tasks.index' );
     }
+
+    public function edit ( int $id )
+    {
+        /** @var AccountRepository $accountRepository */
+        $accountRepository = app ( AccountRepository::class );
+        $accounts = $accountRepository->getByUserIdOrderLatest($this->getCurrentUserId(), [ 'id', 'phone' ]);
+        /** @var AddressRepository $addressRepository */
+        $addressRepository = app ( AddressRepository::class );
+        $addresses = $addressRepository->getByUserIdOrderLatest($this->getCurrentUserId(), [ 'id', 'province', 'city', 'address' ]);
+        $task = $this->tasks->findOrFailById($id, $this->getCurrentUserId());
+
+        return view ( 'task.edit', compact ( 'task', 'accounts', 'addresses' ) );
+    }
 }

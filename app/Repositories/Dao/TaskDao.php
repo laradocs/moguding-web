@@ -52,4 +52,14 @@ class TaskDao implements TaskRepository
 
         return $model;
     }
+
+    public function findOrFailById(int $id, int $userId): Task
+    {
+        $model = $this->findById($id, true);
+        if ( ! $model->authorize($userId) ) {
+            throw new NoPermissionException();
+        }
+
+        return $model;
+    }
 }
