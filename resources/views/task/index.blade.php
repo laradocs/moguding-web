@@ -18,6 +18,7 @@
                 <th data-field="type">打卡类型</th>
                 <th data-field="run_time">运行时间</th>
                 <th data-field="description">打卡备注</th>
+                <th data-field="status">状态</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -45,6 +46,7 @@
                         <span>每天 {{ $task->run [ 'run_time' ] }}</span>
                     </td>
                     <td>{{ $task->desciption }}</td>
+                    <td>{!! $task->status ? '<span class="badge badge-success">启用</span>' : '<span class="badge badge-danger">禁用</span>' !!}</td>
                     <td>
                         <a class="btn btn-sm btn-info" href="{{ route ( 'tasks.edit', $task ) }}" title="">
                             <i class="fa-solid fa-sm fa-pen-to-square"></i>
