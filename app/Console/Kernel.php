@@ -21,7 +21,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call ( function () {
+        $schedule->job ( function () {
             $tasks = Task::with ( [ 'user', 'account', 'address' ] )->get();
             foreach ( $tasks as $task ) {
                 if ( ! $task->status || ! $task->account->status || ( $task->run [ 'runTime' ] != date ( 'H:i' ) ) ) {
