@@ -41,4 +41,9 @@ class Log extends Model
     {
         return $this->belongsTo ( User::class, 'user_id', 'id' );
     }
+
+    public function authorize ( int $userId )
+    {
+        return $this->user_id === $userId;
+    }
 }
