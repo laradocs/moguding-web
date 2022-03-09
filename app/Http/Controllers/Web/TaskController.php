@@ -57,4 +57,16 @@ class TaskController extends Controller
 
         return view ( 'task.edit', compact ( 'task', 'accounts', 'addresses' ) );
     }
+
+    public function update ( TaskRequest $request, int $id )
+    {
+        $this->tasks->createOrUpdate(
+            $this->getCurrentUserId(),
+            $request->all(),
+            $id
+        );
+        session()->flash (  'success', '修改成功！' );
+
+        return redirect()->route ( 'tasks.index' );
+    }
 }
