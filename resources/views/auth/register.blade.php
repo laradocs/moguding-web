@@ -14,7 +14,7 @@
             @enderror
         </div>
         <div class="form-group">
-            <label for="email">邮箱</label>
+            <label for="email">邮箱<span class="text-danger">（请使用真实邮箱，后续可能会添加邮箱验证）</span></label>
             <input id="email" class="form-control @error ( 'email' ) is-invalid @enderror" type="email" name="email" placeholder="请输入邮箱" required="required" autocomplete="off" value="{{ old ( 'email' ) }}" />
             @error ( 'email' )
                 <span class="invalid-feedback">

@@ -69,4 +69,13 @@ class TaskController extends Controller
 
         return redirect()->route ( 'tasks.index' );
     }
+
+    public function destroy ( int $id )
+    {
+        $this->tasks->delete($id, $this->getCurrentUserId());
+
+        return response()->json ( [
+            'message' => '删除成功！',
+        ] );
+    }
 }

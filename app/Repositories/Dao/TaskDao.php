@@ -10,11 +10,11 @@ use Illuminate\Database\Eloquent\Collection;
 
 class TaskDao implements TaskRepository
 {
-    public function getByUserIdOrderLatest(int $userId): Collection
+    public function getByUserIdOrderLatest(int $userId, array $columns = ['*']): Collection
     {
         $models = Task::query()->where ( 'user_id', $userId )
             ->orderBy ( 'updated_at', 'desc' )
-            ->get();
+            ->get ( $columns );
 
         return $models;
     }
@@ -61,5 +61,11 @@ class TaskDao implements TaskRepository
         }
 
         return $model;
+    }
+
+    public function delete(int $id, int $userId): void
+    {
+        $model = $this->findOrFailById($id, $userId);
+        $model->delete();
     }
 }
