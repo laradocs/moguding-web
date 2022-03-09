@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Dao;
 
+use App\Exceptions\NoPermissionException;
 use App\Exceptions\RecordNotFoundException;
 use App\Models\Task;
 use App\Repositories\TaskRepository;
@@ -34,6 +35,9 @@ class TaskDao implements TaskRepository
         if ( is_null ( $model ) ) {
             $model = new Task();
             $model->user_id = $userId;
+        }
+        if ( ! $model->authorize($userId) ) {
+            throw new NoPermissionException();
         }
         $model->account_id = $attributes [ 'account_id' ];
         $model->address_id = $attributes [ 'address_id' ];

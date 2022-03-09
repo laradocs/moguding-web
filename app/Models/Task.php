@@ -69,4 +69,9 @@ class Task extends Model
     {
         return $this->belongsTo ( Address::class, 'address_id', 'id' );
     }
+
+    public function authorize ( int $userId )
+    {
+        return $this->user_id === $userId;
+    }
 }

@@ -69,7 +69,7 @@
                 var self = $(this);
                 swal.fire ( {
                     icon: 'warning',
-                    text: '您确定要删除此地址吗？',
+                    text: '您确定要删除此任务吗？',
                     showConfirmButton: false,
                     showDenyButton: true,
                     denyButtonText: '确定',
@@ -81,7 +81,7 @@
 
                         return $.ajax ( {
                             type: 'DELETE',
-                            url: '/addresses/' + id,
+                            url: '/tasks/' + id,
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             },
