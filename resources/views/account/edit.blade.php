@@ -46,7 +46,7 @@
                                 </span>
                             @enderror
                         </div>
-                        <input class="btn btn-primary" type="submit" value="立即添加" />
+                        <input class="btn btn-primary" type="submit" value="立即修改" />
                     </form>
                 </div>
             </div>

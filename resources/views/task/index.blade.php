@@ -18,6 +18,7 @@
                 <th data-field="type">打卡类型</th>
                 <th data-field="run_time">运行时间</th>
                 <th data-field="description">打卡备注</th>
+                <th data-field="status">状态</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -33,12 +34,19 @@
                                 <span class="badge badge-primary">上班</span>
                             @break
                             @case ( 'END' )
-                            <span class="badge badge-info">下班</span>
+                                <span class="badge badge-info">下班</span>
+                            @break
+                            @default
+                                <span class="badge badge-danger">未知</span>
                             @break
                         @endswitch
                     </td>
-                    <td>{{ $task->run_time [ 'role' ] }} {{ $task->run_time [ 'time' ] }}</td>
+                    <td>
+                        <i class="fa-solid fa-clock"></i>
+                        <span>每天 {{ $task->run [ 'runTime' ] }}</span>
+                    </td>
                     <td>{{ $task->desciption }}</td>
+                    <td>{!! $task->status ? '<span class="badge badge-success">启用</span>' : '<span class="badge badge-danger">禁用</span>' !!}</td>
                     <td>
                         <a class="btn btn-sm btn-info" href="{{ route ( 'tasks.edit', $task ) }}" title="">
                             <i class="fa-solid fa-sm fa-pen-to-square"></i>
@@ -63,7 +71,7 @@
                 var self = $(this);
                 swal.fire ( {
                     icon: 'warning',
-                    text: '您确定要删除此地址吗？',
+                    text: '您确定要删除此任务吗？',
                     showConfirmButton: false,
                     showDenyButton: true,
                     denyButtonText: '确定',
@@ -75,7 +83,7 @@
 
                         return $.ajax ( {
                             type: 'DELETE',
-                            url: '/addresses/' + id,
+                            url: '/tasks/' + id,
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             },

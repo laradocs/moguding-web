@@ -33,7 +33,7 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="address">详细地址</label>
+                            <label for="address">详细地址（打开蘑菇丁/工学云查看定位）</label>
                             <input id="address" class="form-control @error ( 'address' ) is-invalid @enderror" type="text" name="address" placeholder="请输入详细地址" required="required" value="{{ old ( 'address' ) }}" />
                             @error ( 'address' )
                             <span class="invalid-feedback">
@@ -42,8 +42,8 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="longitude">经度</label>
-                            <input id="longitude" class="form-control @error ( 'longitude' ) is-invalid @enderror" type="text" name="longitude" placeholder="请输入经度「百度搜索：经纬度查询」" required="required" value="{{ old ( 'longitude' ) }}" />
+                            <label for="longitude">经度 <a href="https://jingweidu.bmcx.com" target="_blank" title="">点击查询</a></label>
+                            <input id="longitude" class="form-control @error ( 'longitude' ) is-invalid @enderror" type="text" name="longitude" placeholder="请输入经度" required="required" value="{{ old ( 'longitude' ) }}" />
                             @error ( 'longitude' )
                                 <span class="invalid-feedback">
                                     <strong>{{ $message }}</strong>
@@ -51,8 +51,8 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="latitude">纬度</label>
-                            <input id="latitude" class="form-control @error ( 'address' ) is-invalid @enderror" type="text" name="latitude" placeholder="请输入纬度「百度搜索：经纬度查询」" required="required" value="{{ old ( 'latitude' ) }}" />
+                            <label for="latitude">纬度 <a href="https://jingweidu.bmcx.com" target="_blank" title="">点击查询</a></label>
+                            <input id="latitude" class="form-control @error ( 'address' ) is-invalid @enderror" type="text" name="latitude" placeholder="请输入纬度" required="required" value="{{ old ( 'latitude' ) }}" />
                             @error ( 'latitude' )
                                 <span class="invalid-feedback">
                                     <strong>{{ $message }}</strong>
