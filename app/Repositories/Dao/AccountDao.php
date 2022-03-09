@@ -10,11 +10,11 @@ use Illuminate\Database\Eloquent\Collection;
 
 class AccountDao implements AccountRepository
 {
-    public function getByUserIdOrderLatest(int $userId): Collection
+    public function getByUserIdOrderLatest(int $userId, array $columns = ['*']): Collection
     {
         $models = Account::where ( 'user_id', $userId )
             ->orderBy ( 'updated_at', 'desc' )
-            ->get();
+            ->get ( $columns );
 
         return $models;
     }

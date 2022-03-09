@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface AddressRepository
 {
-    public function getByUserIdOrderLatest ( int $userId ): Collection;
+    public function getByUserIdOrderLatest ( int $userId, array $columns = [ '*' ] ): Collection;
 
     public function createOrUpdate ( int $userId, array $attributes, int $id = 0 ): Address;
 

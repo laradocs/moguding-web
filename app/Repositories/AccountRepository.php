@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface AccountRepository
 {
-    public function getByUserIdOrderLatest ( int $userId ): Collection;
+    public function getByUserIdOrderLatest ( int $userId, array $columns = [ '*' ] ): Collection;
 
     public function findOrFailById ( int $id, int $userId ): Account;
 

@@ -4,18 +4,17 @@ namespace App\Repositories\Dao;
 
 use App\Exceptions\NoPermissionException;
 use App\Exceptions\RecordNotFoundException;
-use App\Models\Account;
 use App\Models\Address;
 use App\Repositories\AddressRepository;
 use Illuminate\Database\Eloquent\Collection;
 
 class AddressDao implements AddressRepository
 {
-    public function getByUserIdOrderLatest(int $userId): Collection
+    public function getByUserIdOrderLatest(int $userId, array $columns = [ '*' ]): Collection
     {
         $models = Address::where ( 'user_id', $userId )
             ->orderBy ( 'updated_at', 'desc' )
-            ->get();
+            ->get ( $columns );
 
         return $models;
     }
