@@ -33,11 +33,17 @@
                                 <span class="badge badge-primary">上班</span>
                             @break
                             @case ( 'END' )
-                            <span class="badge badge-info">下班</span>
+                                <span class="badge badge-info">下班</span>
+                            @break
+                            @default
+                                <span class="badge badge-danger">未知</span>
                             @break
                         @endswitch
                     </td>
-                    <td>{{ $task->run_time [ 'role' ] }} {{ $task->run_time [ 'time' ] }}</td>
+                    <td>
+                        <i class="fa-solid fa-clock"></i>
+                        <span>每天 {{ $task->run [ 'run_time' ] }}</span>
+                    </td>
                     <td>{{ $task->desciption }}</td>
                     <td>
                         <a class="btn btn-sm btn-info" href="{{ route ( 'tasks.edit', $task ) }}" title="">

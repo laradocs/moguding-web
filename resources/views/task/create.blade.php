@@ -68,13 +68,18 @@
                         <div class="form-group">
                             <label for="run_time">打卡时间</label>
                             <div class="input-group clockpicker">
-                                <input id="run_time" class="form-control" type="text" name="run_time" placeholder="请选择打卡时间" value="09:00" />
+                                <input id="run_time" class="form-control @error ( 'run_time' ) is-invalid @enderror" type="text" name="run_time" placeholder="请选择打卡时间" value="09:00" />
                                 <div class="input-group-append">
                                     <span class="input-group-text">
                                         <i class="fa-solid fa-clock"></i>
                                     </span>
                                 </div>
                             </div>
+                            @error ( 'run_time' )
+                                <span class="invalid-feedback">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <label for="description">打卡备注</label>

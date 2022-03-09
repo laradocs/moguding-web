@@ -22,7 +22,7 @@ class Task extends Model
         'account_id',
         'address_id',
         'type',
-        'run_time',
+        'run',
         'description',
         'status',
         'created_at',
@@ -45,14 +45,14 @@ class Task extends Model
         'status' => 'boolean',
     ];
 
-    public function getRunTimeAttribute ( $runTime )
+    public function getRunAttribute ( $run )
     {
-        return json_decode ( $runTime, true );
+        return json_decode ( $run, true );
     }
 
-    public function setRunTimeAttribute ( $runTime )
+    public function setRunAttribute ( $run )
     {
-        $this->attributes [ 'run_time' ] = json_encode ( $runTime );
+        $this->attributes [ 'run' ] = json_encode ( $run );
     }
 
     public function user()

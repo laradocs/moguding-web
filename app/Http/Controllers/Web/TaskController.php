@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TaskRequest;
 use App\Repositories\AccountRepository;
 use App\Repositories\AddressRepository;
 use App\Repositories\TaskRepository;
-use Illuminate\Database\Eloquent\Builder;
 
 class TaskController extends Controller
 {
@@ -35,5 +35,13 @@ class TaskController extends Controller
         $addresses = $addressRepository->getByUserIdOrderLatest($this->getCurrentUserId(), [ 'id', 'province', 'city', 'address' ]);
 
         return view ( 'task.create', compact ( 'accounts', 'addresses' ) );
+    }
+
+    public function store ( TaskRequest $request )
+    {
+        $this->tasks->createOrUpdate($this->getCurrentUserId(), $request->all());
+        session()->flash ( 'success', '添加成功！' );
+
+        return redirect()->route ( 'tasks.index' );
     }
 }

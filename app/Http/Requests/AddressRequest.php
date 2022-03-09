@@ -15,8 +15,8 @@ class AddressRequest extends FormRequest
             'province' => 'required|string|max:10',
             'city' => 'nullable|string|max:10',
             'address' => 'required|max:80',
-            'longitude' => 'required',
-            'latitude' => 'required',
+            'longitude' => 'required|float|regex:/^\d{3}.\d{5,6}$/',
+            'latitude' => 'required|float|regex:/^\d{2}.\d{5,6}$/',
         ];
     }
 }
