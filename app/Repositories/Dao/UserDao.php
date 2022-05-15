@@ -2,44 +2,66 @@
 
 namespace App\Repositories\Dao;
 
+use App\Exceptions\BusinessException;
+use App\Exceptions\EmailException;
+use App\Exceptions\NameException;
 use App\Models\User;
 use App\Repositories\UserRepository;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 
 class UserDao implements UserRepository
 {
-    /**
-     * Get a model instance.
-     *
-     * @param int $id
-     * @return User|null
-     */
-    public function findById(int $id): ?User
+    public function find(int $id, bool $throw = false): ?User
     {
-        $model = User::find ( $id );
+        $model = User::find($id);
+        if (is_null($model) && $throw) {
+            throw new BusinessException('该用户不存在。', Response::HTTP_NOT_FOUND);
+        }
 
         return $model;
     }
 
-    /**
-     * Create or update a model instance.
-     *
-     * @param array $attributes
-     * @param int $id
-     * @return User
-     */
-    public function createOrUpdate(array $attributes, int $id = 0): User
+    public function updateOrCreate(array $attributes, int $id = 0): User
     {
-        $model = $this->findById($id);
-        if ( is_null ( $model ) ) {
-            $model = new User();
-            $model->email = $attributes [ 'email' ];
+        $model = $this->find($id);
+        if ($model && ! Gate::allows('update', $model)) {
+            throw new BusinessException('权限不足。', 403);
         }
-        $model->name = $attributes [ 'name' ];
-        $model->gender = $attributes [ 'gender' ];
-        $model->avatar = $attributes [ 'avatar' ] ?? '';
-        $model->password = $attributes [ 'password' ];
+        $name = $attributes['name'];
+        if (($model?->name != $name) && $this->existsByName($name)) {
+            throw new NameException('该名称已经存在。');
+        }
+        $email = $attributes['email'];
+        if (($model?->email !== $email && $this->existsByEmail($email))) {
+            throw new EmailException('该邮箱已经存在。');
+        }
+        if (is_null($model)) {
+            $model = new User();
+        }
+        $model->name = $name;
+        $model->email = $attributes['email'];
+        $model->gender = $attributes['gender'];
+        $model->password = $attributes['password'];
         $model->save();
 
         return $model;
+    }
+
+    public function existsByEmail(string $email): bool
+    {
+        return $this->existsBy('email', $email);
+    }
+
+    public function existsByName(string $name): bool
+    {
+        return $this->existsBy('name', $name);
+    }
+
+    protected function existsBy(string $column, string $value): bool
+    {
+        return User::query()
+            ->where($column, $value)
+            ->exists();
     }
 }

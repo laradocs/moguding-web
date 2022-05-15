@@ -2,6 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Support\Facades\Crypt;
+
 class Account extends Model
 {
     /**
@@ -10,6 +15,33 @@ class Account extends Model
      * @var string
      */
     protected $table = 'accounts';
+
+
+    const NORMAL = true;
+    const ABNORMAL = false;
+
+    public static $status = [
+        self::NORMAL => '正常',
+        self::ABNORMAL => '异常',
+    ];
+
+    public static $statusColor = [
+        self::NORMAL => 'success',
+        self::ABNORMAL => 'danger',
+    ];
+
+    const ANDROID = 'android';
+    const IOS = 'ios';
+
+    public static $device = [
+        self::ANDROID => '安卓',
+        self::IOS => '苹果',
+    ];
+
+    public static $deviceColor = [
+        self::ANDROID => 'primary',
+        self::IOS => 'info',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -22,6 +54,7 @@ class Account extends Model
         'device',
         'phone',
         'password',
+        'deleted_at',
         'status',
         'created_at',
         'updated_at',
@@ -38,23 +71,9 @@ class Account extends Model
         'device' => 'string',
         'phone' => 'integer',
         'password' => 'string',
+        'deleted_at' => 'datetime',
         'status' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
-
-    public function user()
-    {
-        return $this->belongsTo ( User::class, 'user_id', 'id' );
-    }
-
-    public function tasks()
-    {
-        return $this->hasMany ( Account::class, 'account_id', 'id' );
-    }
-
-    public function authorize ( int $userId )
-    {
-        return $this->user_id === $userId;
-    }
 }

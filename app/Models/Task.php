@@ -11,6 +11,38 @@ class Task extends Model
      */
     protected $table = 'tasks';
 
+    const START = 'START';
+    const END = 'END';
+
+    public static $type = [
+        self::START => '上班',
+        self::END => '下班',
+    ];
+
+    public static $typeColor = [
+        self::START => 'primary',
+        self::END => 'info',
+    ];
+
+    const ENABLE = true;
+    const DISABLE = false;
+
+    public static $status = [
+        self::ENABLE => '启用',
+        self::DISABLE => '禁用',
+    ];
+
+    public static $statusColor = [
+        self::ENABLE => 'primary',
+        self::DISABLE => 'danger',
+    ];
+
+    const DAILY = 'daily';
+
+    public static $role = [
+        self::DAILY => '每天',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -24,6 +56,7 @@ class Task extends Model
         'type',
         'run',
         'description',
+        'deleted_at',
         'status',
         'created_at',
         'updated_at',
@@ -36,42 +69,25 @@ class Task extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'account_id' => 'integer',
         'user_id' => 'integer',
+        'account_id' => 'integer',
         'address_id' => 'integer',
         'type' => 'string',
-        'run_time' => 'json',
+        'run' => 'json',
         'description' => 'string',
         'status' => 'boolean',
+        'deleted_at' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
-
-    public function getRunAttribute ( $run )
-    {
-        return json_decode ( $run, true );
-    }
-
-    public function setRunAttribute ( $run )
-    {
-        $this->attributes [ 'run' ] = json_encode ( $run );
-    }
-
-    public function user()
-    {
-        return $this->belongsTo ( User::class, 'user_id', 'id' );
-    }
 
     public function account()
     {
-        return $this->belongsTo ( Account::class, 'account_id', 'id' );
+        return $this->belongsTo(Account::class);
     }
 
     public function address()
     {
-        return $this->belongsTo ( Address::class, 'address_id', 'id' );
-    }
-
-    public function authorize ( int $userId )
-    {
-        return $this->user_id === $userId;
+        return $this->belongsTo(Address::class);
     }
 }

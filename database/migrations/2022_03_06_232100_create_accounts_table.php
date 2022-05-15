@@ -18,7 +18,8 @@ return new class extends Migration {
             $table->enum('device', ['android', 'ios'])->comment('设备');
             $table->char('phone', 11)->comment('手机号码');
             $table->string('password', 60)->comment('密码');
-            $table->boolean('status')->default(1)->comment('状态');
+            $table->softDeletes();
+            $table->boolean('status')->default(1)->comment('状态 0:异常 1:正常');
             $table->timestamps();
         });
     }

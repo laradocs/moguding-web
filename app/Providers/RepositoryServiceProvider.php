@@ -12,9 +12,10 @@ use App\Repositories\Dao\UserDao;
 use App\Repositories\LogRepository;
 use App\Repositories\TaskRepository;
 use App\Repositories\UserRepository;
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 
-class RepositoryServiceProvider extends ServiceProvider
+class RepositoryServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
      * Register services.
@@ -23,11 +24,22 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind ( UserRepository::class, UserDao::class );
-        $this->app->bind ( AccountRepository::class, AccountDao::class );
-        $this->app->bind ( AddressRepository::class, AddressDao::class );
-        $this->app->bind ( TaskRepository::class, TaskDao::class );
-        $this->app->bind ( LogRepository::class, LogDao::class );
+        $this->app->singleton(UserRepository::class, UserDao::class);
+        $this->app->singleton(AccountRepository::class, AccountDao::class);
+        $this->app->singleton(AddressRepository::class, AddressDao::class);
+        $this->app->singleton(TaskRepository::class, TaskDao::class);
+        $this->app->singleton(LogRepository::class, LogDao::class);
+    }
+
+    public function provides()
+    {
+        return [
+            UserRepository::class,
+            AccountRepository::class,
+            AddressRepository::class,
+            TaskRepository::class,
+            LogRepository::class,
+        ];
     }
 
     /**

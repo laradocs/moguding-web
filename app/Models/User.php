@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
@@ -12,7 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The table associated with the model.
@@ -35,6 +35,9 @@ class User extends Authenticatable
         'avatar',
         'password',
         'remember_token',
+        'is_admin',
+        'deleted_at',
+        'active',
         'created_at',
         'updated_at',
     ];
@@ -63,43 +66,53 @@ class User extends Authenticatable
         'avatar' => 'string',
         'password' => 'string',
         'remember_token' => 'string',
+        'is_admin' => 'boolean',
+        'deleted_at' => 'datetime',
+        'active' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
 
-    public function setPasswordAttribute ( string $password )
+    protected $appends = [
+        'slug',
+    ];
+
+    public function slug(): string
     {
-        if ( strlen ( $password ) !== 60 ) {
-            $this->attributes [ 'password' ] = Hash::make ( $password );
-        }
+        return $this->isAdministrator() ? '管理员' : '普通用户';
     }
 
-    public function getAvatarAttribute ( $avatar )
+    public function password(): Attribute
     {
-        if ( str_contains ( $avatar, '//' ) ) {
+        return Attribute::set(function (string $password) {
+            if (password_get_info($password)['algoName'] !== 'bcrypt') {
+                $password = Hash::make($password);
+            }
+
+            return $password;
+        });
+    }
+
+    public function gravatar(int $size = 100): string
+    {
+        $hash = md5($this->email);
+
+        return "https://www.gravatar.com/avatar/{$hash}?s={$size}";
+    }
+
+    public function avatar(): Attribute
+    {
+        return Attribute::get(function (string $avatar) {
+            if (empty($avatar)) {
+                return $this->gravatar();
+            }
+
             return $avatar;
-        }
-
-        return Storage::url ( $avatar );
+        });
     }
 
-    public function accounts()
+    public function scopeIsAdministrator(): bool
     {
-        return $this->hasMany ( Account::class, 'user_id', 'id' );
-    }
-
-    public function addresses()
-    {
-        return $this->hasMany ( Address::class, 'user_id', 'id' );
-    }
-
-    public function tasks()
-    {
-        return $this->hasMany ( Task::class, 'task_id', 'id' );
-    }
-
-    public function logs()
-    {
-        return $this->hasMany ( User::class, 'user_id', 'id' );
+        return $this->is_admin ? true : false;
     }
 }

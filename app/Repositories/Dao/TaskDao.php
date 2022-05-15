@@ -2,70 +2,95 @@
 
 namespace App\Repositories\Dao;
 
-use App\Exceptions\NoPermissionException;
-use App\Exceptions\RecordNotFoundException;
+use App\Exceptions\BusinessException;
 use App\Models\Task;
 use App\Repositories\TaskRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 
 class TaskDao implements TaskRepository
 {
-    public function getByUserIdOrderLatest(int $userId, array $columns = ['*']): Collection
+    public function deleteBy(string $column, string $value): int
     {
-        $models = Task::query()->where ( 'user_id', $userId )
-            ->orderBy ( 'updated_at', 'desc' )
-            ->get ( $columns );
+        return Task::query()
+            ->where($column, $value)
+            ->delete();
+    }
+
+    public function get(int $userId, string $direction = 'desc'): Collection
+    {
+        $models = Task::query()
+            ->with(['account', 'address'])
+            ->where('user_id', $userId)
+            ->orderBy('id', $direction)
+            ->get();
 
         return $models;
     }
 
-    public function findById(int $id, bool $throw = false): ?Task
+    public function find(int $id, bool $throw = false): ?Task
     {
-        $model = Task::find ( $id );
-        if ( is_null ( $model ) && $throw ) {
-            throw new RecordNotFoundException();
+        $model = Task::find($id);
+        if (is_null($model) && $throw) {
+            throw new BusinessException('该任务不存在。', Response::HTTP_NOT_FOUND);
         }
 
         return $model;
     }
 
-    public function createOrUpdate(int $userId, array $attributes, int $id = 0): Task
+    public function updateOrCreate(int $userId, array $attributes, int $id = 0): Task
     {
-        $model = $this->findById($id);
-        if ( is_null ( $model ) ) {
+        $model = $this->find($id);
+        if ($model && ! Gate::allows('own', $model)) {
+            throw new BusinessException('权限不足。', Response::HTTP_FORBIDDEN);
+        }
+        if (is_null($model)) {
             $model = new Task();
             $model->user_id = $userId;
         }
-        if ( ! $model->authorize($userId) ) {
-            throw new NoPermissionException();
-        }
-        $model->account_id = $attributes [ 'account_id' ];
-        $model->address_id = $attributes [ 'address_id' ];
-        $model->type = $attributes [ 'type' ];
+        $model->account_id = $attributes['account'];
+        $model->address_id = $attributes['address'];
+        $model->type = $attributes['type'];
         $model->run = [
-            'runRole' => $attributes [ 'run_role' ],
-            'runTime' => $attributes [ 'run_time' ],
+            'role' => $attributes['run_role'],
+            'time' => $attributes['run_time'],
         ];
-        $model->description = $attributes [ 'description ' ] ?? '';
-        $model->status = $attributes [ 'status' ];
+        $model->description = $attributes['description'] ?? '';
+        $model->status = $attributes['status'];
         $model->save();
 
         return $model;
     }
 
-    public function findOrFailById(int $id, int $userId): Task
+    public function delete(int $id): Task
     {
-        $model = $this->findById($id, true);
-        if ( ! $model->authorize($userId) ) {
-            throw new NoPermissionException();
+        $model = $this->find($id, true);
+        if (! Gate::allows('own', $model)) {
+            throw new BusinessException('权限不足。', Response::HTTP_FORBIDDEN);
         }
+        $model->delete();
 
         return $model;
     }
 
-    public function delete(int $id, int $userId): void
+    public function all(string $direction = 'asc'): Collection
     {
-        $model = $this->findOrFailById($id, $userId);
-        $model->delete();
+        $models = Task::query()
+            ->with(['account', 'address'])
+            ->where('status', true)
+            ->orderBy('id', $direction)
+            ->get();
+
+        return $models;
+    }
+
+    public function updateStatus(int $id, bool $status): Task
+    {
+        $model = $this->find($id, true);
+        $model->status = $status;
+        $model->save();
+
+        return $model;
     }
 }

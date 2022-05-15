@@ -82,7 +82,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => env('APP_LOCALE', 'en'),
 
     /*
     |--------------------------------------------------------------------------
@@ -167,7 +167,6 @@ return [
         /*
          * Package Service Providers...
          */
-        App\Providers\MogudingServiceProvider::class,
 
         /*
          * Application Service Providers...

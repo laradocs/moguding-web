@@ -2,65 +2,88 @@
 
 namespace App\Repositories\Dao;
 
-use App\Exceptions\NoPermissionException;
-use App\Exceptions\RecordNotFoundException;
+use App\Events\Deleted;
+use App\Exceptions\BusinessException;
+use App\Exceptions\PhoneException;
 use App\Models\Account;
 use App\Repositories\AccountRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 
 class AccountDao implements AccountRepository
 {
-    public function getByUserIdOrderLatest(int $userId, array $columns = ['*']): Collection
+    public function get(int $userId, string $direction = 'desc'): Collection
     {
-        $models = Account::where ( 'user_id', $userId )
-            ->orderBy ( 'updated_at', 'desc' )
-            ->get ( $columns );
+        $models = Account::query()
+            ->where('user_id', $userId)
+            ->orderBy('id', $direction)
+            ->get();
 
         return $models;
     }
 
-    public function findById(int $id, bool $throw = false): ?Account
+    public function find(int $id, bool $throw = false): ?Account
     {
-        $model = Account::find ( $id );
-        if ( empty ( $model ) && $throw ) {
-            throw new RecordNotFoundException();
+        $model = Account::find($id);
+        if (is_null($model) && $throw) {
+            throw new BusinessException('该账户不存在。', Response::HTTP_NOT_FOUND);
         }
 
         return $model;
     }
 
-    public function createOrUpdate(int $userId, array $attributes, int $id = 0): Account
+    public function updateOrCreate(int $userId, array $attributes, int $id = 0): Account
     {
-        $model = $this->findById($id);
-        if ( is_null ( $model ) ) {
+        $model = $this->find($id);
+        if ($model && (! Gate::allows('own', $model))) {
+            throw new BusinessException('权限不足。', Response::HTTP_FORBIDDEN);
+        }
+        $phone = $attributes['phone'];
+        if ($model?->phone != $phone && $this->existsByPhone($phone)) {
+            throw new PhoneException('该手机号码已经存在。');
+        }
+        if (is_null($model)) {
             $model = new Account();
             $model->user_id = $userId;
         }
-        if ( ! $model->authorize($userId) ) {
-            throw new NoPermissionException();
-        }
-        $model->device = $attributes [ 'device' ];
-        $model->phone = $attributes [ 'phone' ];
-        $model->password = $attributes [ 'password' ];
-        $model->status = true;
+        $model->device = $attributes['device'];
+        $model->phone = $phone;
+        $model->password = $attributes['password'];
         $model->save();
 
         return $model;
     }
 
-    public function findOrFailById(int $id, int $userId): Account
+    public function existsByPhone(string $phone): bool
     {
-        $model = $this->findById($id, true);
-        if ( ! $model->authorize($userId) ) {
-            throw new NoPermissionException();
-        }
+        return $this->existsBy('phone', $phone);
+    }
+
+    protected function existsBy(string $column, string $value): bool
+    {
+        return Account::query()
+            ->where($column, $value)
+            ->exists();
+    }
+
+    public function updateStatus(int $id, bool $status): Account
+    {
+        $model = $this->find($id, true);
+        $model->status = $status;
+        $model->save();
 
         return $model;
     }
 
-    public function delete(int $id, int $userId): void
+    public function delete(int $id): Account
     {
-        $model = $this->findOrFailById($id, $userId);
-        $model->delete();
+        $model = $this->find($id, true);
+        if (! Gate::allows('own', $model)) {
+            throw new BusinessException('权限不足。', Response::HTTP_FORBIDDEN);
+        }
+        Deleted::dispatch($model);
+
+        return $model;
     }
 }

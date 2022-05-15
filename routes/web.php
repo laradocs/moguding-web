@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers;
 
-use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,18 +15,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::redirect ( '/', 'login' );
-Route::middleware ( 'guest:web' )->group ( function () {
-    Route::get ( 'login', [ LoginController::class, 'create' ] )->name ( 'login' );
-    Route::post ( 'login', [ LoginController::class, 'store' ] )->name ( 'login' );
-    Route::get ( 'register', [ RegisterController::class, 'create' ] )->name ( 'register' );
-    Route::post ( 'register', [ RegisterController::class, 'store' ] )->name ( 'register' );
-} );
+Route::redirect('/', 'login');
+Route::get('login', [LoginController::class, 'create'])->name('login');
+Route::post('login', [LoginController::class, 'store'])->name('login');
 
-Route::middleware ( 'auth:web' )->group ( function () {
-    Route::delete ( 'logout', [ LoginController::class, 'destroy' ] )->name ( 'logout' );
-    Route::get ( 'dashboard', [ DashboardController::class, 'index' ] )->name ( 'dashboard' );
-    Route::resource ( 'accounts', AccountController::class )->except ( 'show' );
-    Route::resource ( 'addresses', AddressController::class )->except ( 'show' );
-    Route::resource ( 'tasks', TaskController::class )->except ( 'show' );
-} );
+Route::delete('logout', [LoginController::class, 'destroy'])->name('logout');
+
+Route::get('register', [UserController::class, 'create'])->name('register');
+Route::post('register', [UserController::class, 'store'])->name('register');
+Route::match(['put', 'patch'], 'users/{user}', [UserController::class, 'update']);
+Route::delete('users/{user}', [UserController::class, 'destroy']);
+
+Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+Route::resource('accounts', AccountController::class)->except('show');
+
+Route::post('socialize/{account}', [SocialController::class, 'store'])->name('socialize');
+
+Route::resource('addresses', AddressController::class)->except('show');
+
+Route::resource('tasks', TaskController::class)->except('show');

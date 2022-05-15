@@ -8,12 +8,12 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield ( 'title' ) - {{ config ( 'app.name' ) }}</title>
     @section ( 'style' )
-        <link rel="stylesheet" href="{{ asset ( 'assets/bootstrap@4.6.1/css/bootstrap.min.css' ) }}" />
+        <link rel="stylesheet" href="{{ asset ( 'assets/bootstrap@4.6.1/css/bootstrap.min.css' ) }}"/>
         <link rel="stylesheet" href="{{ asset ( 'assets/bootstrap-table@1.19.1/css/bootstrap-table.min.css' ) }}">
-        <link rel="stylesheet" href="{{ asset ( 'assets/fontawesome@6.0.0/css/fontawesome.min.css' ) }}" />
-        <link rel="stylesheet" href="{{ asset ( 'assets/toastr@2.1.1/css/toastr.min.css' ) }}" />
-        <link rel="stylesheet" href="{{ asset ( 'assets/sweetalert2@11.4.4/css/sweetalert2.min.css' ) }}" />
-        <link rel="stylesheet" href="{{ asset ( 'css/app.css' ) }}" />
+        <link rel="stylesheet" href="{{ asset ( 'assets/fontawesome@6.0.0/css/fontawesome.min.css' ) }}"/>
+        <link rel="stylesheet" href="{{ asset ( 'assets/toastr@2.1.1/css/toastr.min.css' ) }}"/>
+        <link rel="stylesheet" href="{{ asset ( 'assets/sweetalert2@11.4.4/css/sweetalert2.min.css' ) }}"/>
+        <link rel="stylesheet" href="{{ asset ( 'css/app.css' ) }}"/>
     @show
 </head>
 <body id="page-top">
@@ -47,8 +47,8 @@
         (function ($) {
             "use strict";
 
-            $('#logout').click ( function () {
-                swal.fire ( {
+            $('#logout').click(function () {
+                swal.fire({
                     icon: 'question',
                     text: '您确定要退出登录吗？',
                     confirmButtonText: '确定',
@@ -56,32 +56,32 @@
                     cancelButtonText: '取消',
                     showLoaderOnConfirm: true,
                     preConfirm: () => {
-                        return $.ajax ( {
+                        return $.ajax({
                             type: 'DELETE',
                             url: '{{ route ( 'logout' ) }}',
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             },
-                            success: ( response ) => {
-                                swal.fire ( {
+                            success: (response) => {
+                                swal.fire({
                                     icon: 'success',
                                     text: response.message,
                                     confirmButtonText: '确定'
-                                } ).then ( () => {
-                                    window.location.replace ( response.uri );
-                                } );
+                                }).then(() => {
+                                    window.location.replace(response.redirect_url);
+                                });
                             },
-                            error: ( error ) => {
-                                swal.fire ( {
+                            error: (error) => {
+                                swal.fire({
                                     icon: 'error',
                                     text: '服务器繁忙，请稍后重试。',
                                     confirmButtonText: '确定'
-                                } );
+                                });
                             }
-                        } );
+                        });
                     }
-                } );
-            } );
+                });
+            });
 
             $('#table').bootstrapTable();
         })(jQuery);

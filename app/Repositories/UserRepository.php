@@ -6,7 +6,11 @@ use App\Models\User;
 
 interface UserRepository
 {
-    public function findById ( int $id ): ?User;
+    public function find(int $id, bool $throw = false): ?User;
 
-    public function createOrUpdate ( array $attributes, int $id = 0 ): User;
+    public function updateOrCreate(array $attributes, int $id = 0): User;
+
+    public function existsByEmail(string $email): bool;
+
+    public function existsByName(string $name): bool;
 }

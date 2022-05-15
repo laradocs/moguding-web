@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
+
 class Address extends Model
 {
     /**
@@ -24,6 +26,7 @@ class Address extends Model
         'address',
         'longitude',
         'latitude',
+        'deleted_at',
         'created_at',
         'updated_at',
     ];
@@ -36,27 +39,25 @@ class Address extends Model
         'address' => 'string',
         'longitude' => 'float',
         'latitude' => 'float',
+        'deleted_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'full_address' => 'string',
     ];
 
-    public function getFullAddressAttribute()
-    {
-        return sprintf ( '%s %s %s', $this->province, $this->city, $this->address );
-    }
+    protected $appends = [
+        'full_address',
+    ];
 
-    public function user()
+    public function fullAddress(): Attribute
     {
-        return $this->belongsTo ( User::class, 'user_id', 'id' );
-    }
-
-    public function tasks()
-    {
-        return $this->hasMany ( Task::class, 'address_id', 'id' );
-    }
-
-    public function authorize ( int $userId )
-    {
-        return $this->user_id === $userId;
+        return Attribute::get(
+            fn () => sprintf(
+                '%s %s %s',
+                $this->province,
+                $this->city,
+                $this->address,
+            )
+        );
     }
 }

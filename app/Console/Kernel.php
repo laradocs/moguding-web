@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Jobs\ProcessPunch;
+use App\Jobs\ProcessSign;
 use App\Models\Task;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Events\Dispatcher;
@@ -21,15 +22,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->job ( function () {
-            $tasks = Task::with ( [ 'user', 'account', 'address' ] )->get();
-            foreach ( $tasks as $task ) {
-                if ( ! $task->status || ! $task->account->status || ( $task->run [ 'runTime' ] != date ( 'H:i' ) ) ) {
-                    continue;
-                }
-                ProcessPunch::dispatch ( $task );
-            }
-        });
+        $schedule->job(new ProcessSign);
     }
 
     /**
