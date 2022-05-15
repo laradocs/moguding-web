@@ -2,15 +2,11 @@
 
 namespace App\Console;
 
-use App\Jobs\ProcessPunch;
 use App\Jobs\ProcessSign;
-use App\Models\Task;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use Laradocs\Moguding\Exceptions\RequestTimeoutException;
-use Laradocs\Moguding\Exceptions\UnauthenticatedException;
 
 class Kernel extends ConsoleKernel
 {
