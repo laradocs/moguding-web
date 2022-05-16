@@ -25,6 +25,13 @@ class AppServiceProvider extends ServiceProvider implements DeferrableProvider
         });
     }
 
+    public function provides()
+    {
+        return [
+            MogudingResolverInterface::class,
+        ];
+    }
+
     /**
      * Bootstrap any application services.
      *
