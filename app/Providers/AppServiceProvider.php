@@ -4,12 +4,9 @@ namespace App\Providers;
 
 use App\Jobs\ProcessSign;
 use App\Services\ManagerProcessor;
-use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
-use Laradocs\Moguding\MogudingManager;
-use Laradocs\Moguding\MogudingResolverInterface;
 
-class AppServiceProvider extends ServiceProvider implements DeferrableProvider
+class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
@@ -18,18 +15,9 @@ class AppServiceProvider extends ServiceProvider implements DeferrableProvider
      */
     public function register()
     {
-        $this->app->singleton(MogudingResolverInterface::class, MogudingManager::class);
-
         $this->app->bindMethod([ProcessSign::class, 'handle'], function ($job, $app) {
             return $job->handle($app->make(ManagerProcessor::class));
         });
-    }
-
-    public function provides()
-    {
-        return [
-            MogudingResolverInterface::class,
-        ];
     }
 
     /**
