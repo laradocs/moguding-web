@@ -26,7 +26,7 @@ class AddressDao implements AddressRepository
     {
         $model = Address::find($id);
         if (is_null($model) && $throw) {
-            throw new BusinessException('该地址不存在。', Response::HTTP_NOT_FOUND);
+            throw new BusinessException('地址不存在', Response::HTTP_NOT_FOUND);
         }
 
         return $model;
@@ -36,7 +36,7 @@ class AddressDao implements AddressRepository
     {
         $model = $this->find($id);
         if ($model && ! Gate::allows('own', $model)) {
-            throw new BusinessException('权限不足。', Response::HTTP_FORBIDDEN);
+            throw new BusinessException('权限不足', Response::HTTP_FORBIDDEN);
         }
         if (is_null($model)) {
             $model = new Address();

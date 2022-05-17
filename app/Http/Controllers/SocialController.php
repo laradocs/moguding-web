@@ -7,7 +7,7 @@ use App\Repositories\AccountRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Exception;
-use Laradocs\Moguding\MogudingResolverInterface;
+use Illuminate\Support\Facades\Gate;
 
 class SocialController extends Controller
 {
@@ -21,10 +21,11 @@ class SocialController extends Controller
         /** @var AccountRepository $accounts */
         $accounts = app(AccountRepository::class);
         $account = $accounts->find($accountId, true);
-        /** @var MogudingResolverInterface $moguding */
-        $moguding = app(MogudingResolverInterface::class);
+        if (! Gate::allows('own', $account)) {
+            throw new BusinessException('权限不足', Response::HTTP_FORBIDDEN);
+        }
         try {
-            $moguding->login($account->device, $account->phone, $account->password);
+            app('moguding')->login($account->device, $account->phone, $account->password);
         } catch (Exception $e) {
             $accounts->updateStatus($accountId, false);
             throw new BusinessException($e->getMessage(), Response::HTTP_UNAUTHORIZED);

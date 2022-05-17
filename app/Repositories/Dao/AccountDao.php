@@ -27,7 +27,7 @@ class AccountDao implements AccountRepository
     {
         $model = Account::find($id);
         if (is_null($model) && $throw) {
-            throw new BusinessException('该账户不存在。', Response::HTTP_NOT_FOUND);
+            throw new BusinessException('账户不存在', Response::HTTP_NOT_FOUND);
         }
 
         return $model;
@@ -37,7 +37,7 @@ class AccountDao implements AccountRepository
     {
         $model = $this->find($id);
         if ($model && (! Gate::allows('own', $model))) {
-            throw new BusinessException('权限不足。', Response::HTTP_FORBIDDEN);
+            throw new BusinessException('权限不足', Response::HTTP_FORBIDDEN);
         }
         $phone = $attributes['phone'];
         if ($model?->phone != $phone && $this->existsByPhone($phone)) {
@@ -80,7 +80,7 @@ class AccountDao implements AccountRepository
     {
         $model = $this->find($id, true);
         if (! Gate::allows('own', $model)) {
-            throw new BusinessException('权限不足。', Response::HTTP_FORBIDDEN);
+            throw new BusinessException('权限不足', Response::HTTP_FORBIDDEN);
         }
         Deleted::dispatch($model);
 

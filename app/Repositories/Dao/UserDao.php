@@ -16,7 +16,7 @@ class UserDao implements UserRepository
     {
         $model = User::find($id);
         if (is_null($model) && $throw) {
-            throw new BusinessException('该用户不存在。', Response::HTTP_NOT_FOUND);
+            throw new BusinessException('该用户不存在', Response::HTTP_NOT_FOUND);
         }
 
         return $model;
@@ -26,7 +26,7 @@ class UserDao implements UserRepository
     {
         $model = $this->find($id);
         if ($model && ! Gate::allows('update', $model)) {
-            throw new BusinessException('权限不足。', 403);
+            throw new BusinessException('权限不足', Response::HTTP_FORBIDDEN);
         }
         $name = $attributes['name'];
         if (($model?->name != $name) && $this->existsByName($name)) {

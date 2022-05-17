@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\BusinessException;
 use App\Http\Requests\TaskRequest;
 use App\Repositories\AccountRepository;
 use App\Repositories\AddressRepository;
 use App\Repositories\TaskRepository;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class TaskController extends Controller
 {
@@ -52,6 +55,9 @@ class TaskController extends Controller
     public function edit(int $id)
     {
         $task = $this->tasks->find($id, true);
+        if (! Gate::allows('own', $task)) {
+            throw new BusinessException('权限不足', Response::HTTP_FORBIDDEN);
+        }
         $accounts = $this->accounts->get(Auth::id());
         $addresses = $this->addresses->get(Auth::id());
 

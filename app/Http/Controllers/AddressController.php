@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\BusinessException;
 use App\Http\Requests\AddressRequest;
 use App\Repositories\AddressRepository;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class AddressController extends Controller
 {
@@ -41,6 +44,9 @@ class AddressController extends Controller
     public function edit(int $id)
     {
         $address = $this->addresses->find($id, true);
+        if(! Gate::allows('own', $address)) {
+            throw new BusinessException('权限不足', Response::HTTP_FORBIDDEN);
+        }
 
         return view('address.edit', compact('address'));
     }

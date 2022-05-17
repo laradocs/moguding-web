@@ -5,7 +5,6 @@ namespace App\Providers;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 use Laradocs\Moguding\MogudingManager;
-use Laradocs\Moguding\MogudingResolverInterface;
 
 class MogudingServiceProvider extends ServiceProvider implements DeferrableProvider
 {
@@ -16,7 +15,7 @@ class MogudingServiceProvider extends ServiceProvider implements DeferrableProvi
      */
     public function register()
     {
-        $this->app->singleton(MogudingResolverInterface::class, MogudingManager::class);
+        $this->app->singleton('moguding', MogudingManager::class);
     }
 
     /**
@@ -27,7 +26,7 @@ class MogudingServiceProvider extends ServiceProvider implements DeferrableProvi
     public function provides()
     {
         return [
-            MogudingResolverInterface::class,
+            'moguding',
         ];
     }
 }

@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\BusinessException;
 use App\Http\Requests\AccountRequest;
 use App\Repositories\AccountRepository;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class AccountController extends Controller
 {
@@ -41,6 +44,9 @@ class AccountController extends Controller
     public function edit(int $id)
     {
         $account = $this->accounts->find($id, true);
+        if (! Gate::allows('own', $account)) {
+            throw new BusinessException('权限不足', Response::HTTP_FORBIDDEN);
+        }
 
         return view('account.edit', compact('account'));
     }

@@ -33,7 +33,7 @@ class TaskDao implements TaskRepository
     {
         $model = Task::find($id);
         if (is_null($model) && $throw) {
-            throw new BusinessException('该任务不存在。', Response::HTTP_NOT_FOUND);
+            throw new BusinessException('任务不存在', Response::HTTP_NOT_FOUND);
         }
 
         return $model;
@@ -43,7 +43,7 @@ class TaskDao implements TaskRepository
     {
         $model = $this->find($id);
         if ($model && ! Gate::allows('own', $model)) {
-            throw new BusinessException('权限不足。', Response::HTTP_FORBIDDEN);
+            throw new BusinessException('权限不足', Response::HTTP_FORBIDDEN);
         }
         if (is_null($model)) {
             $model = new Task();
@@ -67,7 +67,7 @@ class TaskDao implements TaskRepository
     {
         $model = $this->find($id, true);
         if (! Gate::allows('own', $model)) {
-            throw new BusinessException('权限不足。', Response::HTTP_FORBIDDEN);
+            throw new BusinessException('权限不足', Response::HTTP_FORBIDDEN);
         }
         $model->delete();
 
