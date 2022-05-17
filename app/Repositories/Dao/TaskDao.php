@@ -18,7 +18,7 @@ class TaskDao implements TaskRepository
             ->delete();
     }
 
-    public function get(int $userId, string $direction = 'desc'): Collection
+    public function get(int $userId, string $direction = 'asc'): Collection
     {
         $models = Task::query()
             ->with(['account', 'address'])

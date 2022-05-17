@@ -12,6 +12,6 @@ class AddressPolicy
 
     public function own(User $user, Address $address)
     {
-        return $user->isAdministrator() || $user->id === $address->id;
+        return $user->isAdministrator() || $user->id === $address->user_id;
     }
 }
