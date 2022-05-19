@@ -28,7 +28,7 @@ class SocialController extends Controller
             app('moguding')->login($account->device, $account->phone, $account->password);
         } catch (Exception $e) {
             $accounts->updateStatus($accountId, false);
-            throw new BusinessException($e->getMessage(), Response::HTTP_UNAUTHORIZED);
+            throw new BusinessException($e->getMessage() ?? '请求超时！', Response::HTTP_UNAUTHORIZED);
         }
         $accounts->updateStatus($accountId, true);
 
